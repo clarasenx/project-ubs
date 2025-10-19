@@ -20,11 +20,12 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Rotas liberadas (login, estáticos e uma eventual API pública)
-  const isPublicPath = ["/login", "/infoPage"].includes(pathname);
+  const isPrivate = pathname === '/'
+
   const token = req.cookies.get("auth")?.value;
   const ok = await isValidToken(token);
 
-  if (isPublicPath) {
+  if (!isPrivate) {
     return NextResponse.next();
   }
 
