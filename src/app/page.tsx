@@ -182,7 +182,7 @@ export default function Home() {
           date={date}
         />
 
-        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow bg-white">
+        <div className="overflow-x-auto rounded-t-lg border border-gray-200 border-b-none shadow bg-white">
           <table className="min-w-full border-collapse text-sm table-auto">
             <thead className="bg-gray-50 text-[#0A8271] uppercase text-xs font-semibold">
               {table.getHeaderGroups().map((hg) => (
@@ -220,42 +220,42 @@ export default function Home() {
             </tbody>
           </table>
 
-          {/* Rodapé com paginação e seletor de linhas */}
-          <div className="flex items-center justify-between px-4 py-3 text-sm text-[#0A8271] bg-gray-50 border-t border-gray-200">
-            <span>
-              Página {table.getState().pagination.pageIndex + 1} de{' '}
-              {table.getPageCount()}
-            </span>
+        </div>
+        {/* Rodapé com paginação e seletor de linhas */}
+        <div className="w-full border border-gray-200 border-b-none shadow rounded-b-lg flex items-center justify-between px-4 py-3 text-sm text-[#0A8271] bg-gray-50 border-t border-gray-200">
+          <span>
+            Página {table.getState().pagination.pageIndex + 1} de{' '}
+            {table.getPageCount()}
+          </span>
 
-            <div className="flex items-center gap-2">
-              <button
-                className="px-2 py-1 border rounded hover:bg-gray-200"
-                onClick={() => table.previousPage()}
-              >
-                Anterior
-              </button>
-              <button
-                className="px-2 py-1 border rounded hover:bg-gray-200"
-                onClick={() => {
-                  if (table.getPageCount() <= table.getState().pagination.pageIndex + 1) return
-                  table.nextPage()
-                }}
-              >
-                Próxima
-              </button>
+          <div className="flex items-center gap-2">
+            <button
+              className="px-2 py-1 border rounded hover:bg-gray-200"
+              onClick={() => table.previousPage()}
+            >
+              Anterior
+            </button>
+            <button
+              className="px-2 py-1 border rounded hover:bg-gray-200"
+              onClick={() => {
+                if (table.getPageCount() <= table.getState().pagination.pageIndex + 1) return
+                table.nextPage()
+              }}
+            >
+              Próxima
+            </button>
 
-              <select
-                className="ml-4 border rounded px-2 py-1 text-sm"
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => table.setPageSize(Number(e.target.value))}
-              >
-                {[5, 10, 20, 50].map((size) => (
-                  <option key={size} value={size}>
-                    {size} linhas
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              className="ml-4 border rounded px-2 py-1 text-sm"
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => table.setPageSize(Number(e.target.value))}
+            >
+              {[5, 10, 20, 50].map((size) => (
+                <option key={size} value={size}>
+                  {size} linhas
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
