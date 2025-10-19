@@ -30,8 +30,8 @@ export const FilterCard = ({
     <section className="bg-white rounded-lg shadow border-2 p-4 mb-3">
       <div className="max-w-6xl items-center m-auto">
         <h1 className="font-bold text-[#09483F] text-lg">Filtros</h1>
-        <div className="flex justify-between mt-4">
-          <div className='flex flex-wrap gap-2 w-full mr-16'>
+        <div className="flex justify-between mt-4 flex flex-col sm:flex-row gap-2 sm:gap-0">
+          <div className='flex flex-wrap lg:flex-nowrap gap-2 w-full mr-16'>
             <Input
               icon={Search}
               placeholder='Pesquise por nome'
@@ -39,7 +39,7 @@ export const FilterCard = ({
               className='bg-gray-50 h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold text-sm shadow-sm transition-all duration-150 cursor-text outline-none'
             />
             <Select onValueChange={onUbsChange} value={selectedUbs}>
-              <SelectTrigger className="bg-gray-50 w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none">
+              <SelectTrigger className="bg-gray-50 w-full sm:w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none">
                 <SelectValue placeholder="Selecione uma UBS" />
               </SelectTrigger>
               <SelectContent className="bg-gray-50 p-2 rounded-xl shadow-lg">

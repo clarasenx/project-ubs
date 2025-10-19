@@ -26,7 +26,7 @@ export const DatePicker = ({
         <Button
           variant="outline"
           data-empty={!date}
-          className="bg-gray-50 w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
+          className="bg-gray-50 w-full sm:w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
         >
           <CalendarIcon />
           {date ? format(date, "dd/MM/yyyy") : <span>Pick a date</span>}
