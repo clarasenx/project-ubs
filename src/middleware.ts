@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (!ok) {
-    const url = new URL("/login", req.url);
+    const url = new URL("/infoPage", req.url);
     return NextResponse.redirect(url);
   }
 
