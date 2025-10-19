@@ -1,0 +1,48 @@
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+
+export const FilterCard = () => {
+  return (
+    <section className="bg-white rounded-lg shadow border-2 p-4 mb-3">
+      <div className="max-w-6xl items-center m-auto">
+        <h1 className="font-bold text-[#09483F] text-lg">
+          Filtros
+        </h1>
+        <div className="flex justify-between mt-4">
+          <div className='flex gap-2 w-full mr-16'>
+            <Input icon={Search} placeholder='Pesquise por nome' className='bg-amber-50 h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold text-sm shadow-sm transition-all duration-150 cursor-text outline-none'/>
+            <Select>
+              <SelectTrigger className="bg-amber-50 w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none">
+                <SelectValue placeholder="Selecione uma UBS"  className='text-[#09483F]'/>
+              </SelectTrigger>
+              <SelectContent className="bg-amber-50 p-2 rounded-xl shadow-lg">
+                <SelectGroup>
+                  {[
+                    { value: "zonaSul", label: "Zona Sul" },
+                    { value: "agenorDeCarvalho", label: "Agenor de Carvalho" },
+                    { value: "mauricioBustani", label: "Mauricio Bustani" },
+                    { value: "zonaLeste", label: "Zona Leste" },
+                    { value: "castanheira", label: "Castanheira" },
+                  ].map((item, index) => (
+                  <SelectItem
+                  key={`SelectItem ${index}`}
+                  value={item.value}
+                    className="px-2 cursor-pointer font-semibold text-[#09483F] focus:text-white focus:bg-[#0A8271] rounded-md transition-colors"
+                  >
+                    {item.label}
+                  </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <Button variant="default" className='bg-white hover:bg-[#bd0000] text-[#bd0000] hover:text-white border-[#bd0000] border-2 cursor-pointer'>Remover Filtros</Button>
+        </div>
+      </div>
+    </section>
+  )
+}
