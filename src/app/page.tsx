@@ -1,5 +1,6 @@
 'use client'
 
+import { api } from '@/api/api'
 import { FilterCard } from '@/components/filterCard'
 import { Header } from '@/components/header'
 import { ISchedule } from '@/interfaces/ISchedule'
@@ -10,40 +11,11 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { io, Socket } from 'socket.io-client'
 
-const data: ISchedule[] = [
-  {
-    id: '1',
-    ubsName: 'Zona Sul',
-    patientName: 'Joao Lucas Magalhães de Souza',
-    document: '000.000.000-00',
-    date: new Date(),
-    hour: '14:00',
-    doctorName: 'Fulano',
-  },
-  {
-    id: '2',
-    ubsName: 'Castanheiras',
-    patientName:
-      'Leonardo Figueiredo Santos Alencar',
-    document: '111.111.111-11',
-    date: new Date(),
-    hour: '15:00',
-    doctorName: 'Fulano',
-  },
-  {
-    id: '3',
-    ubsName: 'Agenor de Carvalho',
-    patientName: 'Clara Ribeiro da Silva Melo',
-    document: '222.222.222-22',
-    date: new Date(),
-    hour: '16:00',
-    doctorName: 'Fulano',
-  },
-]
+let socket: Socket
 
-// Definindo colunas
 const columns: ColumnDef<ISchedule>[] = [
   {
     accessorKey: 'patientName',
@@ -86,7 +58,7 @@ const columns: ColumnDef<ISchedule>[] = [
     accessorKey: 'hour',
     header: 'Horário',
     cell: ({ getValue }) => (
-      <div className="max-w-[80px] truncate">{getValue<string>()}</div>
+      <div className="max-w-[80px] truncate">{extractHourMinute(getValue<string>())}</div>
     ),
   },
   {
@@ -98,17 +70,80 @@ const columns: ColumnDef<ISchedule>[] = [
   },
 ]
 
+function extractHourMinute(time: string): string {
+  return time.split(':').slice(0, 2).join(':');
+}
+
 export default function Home() {
-  const [dataState] = useState(data)
   const [pageSize, setPageSize] = useState(5)
+  const [schedules, setSchedules] = useState<ISchedule[]>([])
+  const [ubsList, setUbsList] = useState<string[]>([])
+  const [selectedUbs, setSelectedUbs] = useState<string>('')
+  const [searchName, setSearchName] = useState<string>('')
+
+  function generateUbsList(data: ISchedule[]) {
+    const unique = [...new Set(data.map((s) => s.ubsName))]
+    setUbsList(unique)
+  }
+
+  async function getSchedules() {
+    try {
+      const { data } = await api.get<ISchedule[]>('schedule')
+      const formatted = data.map((s) => ({ ...s, date: new Date(s.date) }))
+      setSchedules(formatted)
+      generateUbsList(formatted)
+    } catch (err) {
+      console.log(err);
+
+    }
+  }
+
+  const filteredSchedules = useMemo(() => {
+    return schedules.filter((s) => {
+      const matchesUbs =
+        selectedUbs === '' || s.ubsName.toLowerCase() === selectedUbs.toLowerCase()
+      const matchesName =
+        searchName === '' ||
+        s.patientName.toLowerCase().includes(searchName.toLowerCase())
+      return matchesUbs && matchesName
+    })
+  }, [schedules, selectedUbs, searchName])
 
   const table = useReactTable({
-    data: dataState,
+    data: filteredSchedules,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageIndex: 0, pageSize } },
   })
+
+  useEffect(() => {
+
+    // conecta ao servidor backend
+    socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000', {
+      transports: ['websocket'], // evita fallback a long-polling
+    })
+
+    socket.on('connect', () => {
+      console.log('✅ Conectado ao servidor Socket.IO')
+    })
+
+    socket.on('new-schedule', (data: ISchedule) => {
+      const newSchedule = { ...data, date: new Date(data.date) }
+      console.log(data);
+      setSchedules((current) => {
+        const updated = [newSchedule, ...current]
+        generateUbsList(updated)
+        return updated
+      })
+    })
+
+    socket.on('disconnect', () => {
+      console.log('❌ Desconectado do servidor')
+    })
+
+    getSchedules()
+  }, [setSchedules])
 
   return (
     <main className="min-h-screen bg-gray-100">
@@ -118,7 +153,15 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-[#09483F]">Agendamentos</h1>
         </div>
 
-        <FilterCard />
+        <FilterCard
+          ubsList={ubsList}
+          onSearchChange={setSearchName}
+          onUbsChange={setSelectedUbs}
+          onClearFilters={() => {
+            setSearchName('')
+            setSelectedUbs('')
+          }}
+        />
 
         <div className="overflow-x-auto rounded-lg border border-gray-200 shadow bg-white">
           <table className="min-w-full border-collapse text-sm table-auto">
@@ -133,9 +176,9 @@ export default function Home() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </th>
                   ))}
                 </tr>
@@ -174,7 +217,10 @@ export default function Home() {
               </button>
               <button
                 className="px-2 py-1 border rounded hover:bg-gray-200"
-                onClick={() => table.nextPage()}
+                onClick={() => {
+                  if (table.getPageCount() <= table.getState().pagination.pageIndex + 1) return
+                  table.nextPage()
+                }}
               >
                 Próxima
               </button>
