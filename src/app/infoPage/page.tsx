@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function InfoPage() {
   return (
-    <div className="bg-gray-50 min-h-screen lg:h-dvh lg:overflow-hidden">
+    <div className="bg-gray-50 min-h-screen lg:h-dvh">
       {/* Header fixo na parte de cima */}
       <Header>
         <a className="hover:underline">Início</a>
