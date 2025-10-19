@@ -31,7 +31,7 @@ export const FilterCard = ({
       <div className="max-w-6xl items-center m-auto">
         <h1 className="font-bold text-[#09483F] text-lg">Filtros</h1>
         <div className="flex justify-between mt-4">
-          <div className='flex gap-2 w-full mr-16'>
+          <div className='flex flex-wrap gap-2 w-full mr-16'>
             <Input
               icon={Search}
               placeholder='Pesquise por nome'
