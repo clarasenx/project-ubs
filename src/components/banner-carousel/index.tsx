@@ -19,13 +19,13 @@ interface ImageCarouselProps {
 
 export const ImageCarousel = ({ items }: ImageCarouselProps) => {
   return (
-    <Carousel className="w-full max-w-sm">
+    <Carousel className="w-full max-w-sm ">
       <CarouselContent>
         {items.map((item, index) => (
           <CarouselItem key={index}>
               <Card>
                 <CardContent className="flex items-center justify-center py-8">
-                  <Link href={item.href}>
+                  <Link href={item.href} target="_blank">
                     <Image
                       src={item.src}
                       alt={item.alt || `Imagem ${index + 1}`}
