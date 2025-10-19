@@ -8,65 +8,68 @@ import Image from "next/image";
 
 export default function InfoPage() {
   return (
-    <div className="bg-gray-50 h-dvh overflow-hidden">
+    <div className="bg-gray-50 min-h-screen lg:h-dvh lg:overflow-hidden">
       {/* Header fixo na parte de cima */}
       <Header>
-        <a className="hover:underline">
-          Início
-        </a>
-        <a className="hover:underline">
-          Informações
-        </a>
-        <a className="hover:underline">
-          Contato
-        </a>
+        <a className="hover:underline">Início</a>
+        <a className="hover:underline">Informações</a>
+        <a className="hover:underline">Contato</a>
       </Header>
 
-      {/* Conteúdo ocupa o restante da viewport sem criar scroll */}
-      <main className="max-w-6xl mx-auto w-full p-6 grid gap-6 lg:grid-cols-2 items-center grid-cols-1 h-full overflow-hidden">
-        {/* Coluna esquerda: Carousel em card com altura controlada */}
-        <section className="h-full">
-          <div className="h-full rounded-2xl overflow-hidden">
-            <div className="h-full">
-              {/* Wrapper com altura limitada para evitar overflow */}
-              <div className="h-full flex  justify-center">
-                <ImageCarousel
-                  items={[
-                    {
-                      src: "/CampanhaOutubroRosa.jpeg",
-                      href: "https://www.instagram.com/p/DPoQDZJgNkF/?igsh=c2puYmJqYXdpd3Nk",
-                    },
-                    {
-                      src: "/CampanhaMultivacinação.jpeg",
-                      href: "https://www.instagram.com/p/DP6i3STjZw3/?igsh=ZWY5YTJpdnJuZnJ2",
-                    },
-                    {
-                      src: "/VacinaSarampo.jpeg",
-                      href: "https://www.instagram.com/p/DNqIBrOM4YF/?igsh=cWU1ZnMya21ocGMw",
-                    },
-                  ]}
-                />
+      {/* Conteúdo: mobile com scroll; desktop ocupa a viewport sem scroll */}
+      <main className="
+        max-w-6xl mx-auto w-full
+        px-4 py-6 sm:p-6
+        grid gap-6 grid-cols-1 lg:grid-cols-2
+        lg:h-full lg:overflow-hidden lg:items-center
+      ">
+        {/* Coluna esquerda: Carousel */}
+        <section className="h-auto lg:h-full">
+          <div className="h-auto lg:h-full rounded-2xl overflow-hidden">
+            <div className="h-auto lg:h-full">
+              <div className="h-auto lg:h-full flex justify-center">
+                {/* No mobile, limita visual com aspect ratio; no desktop preenche a coluna */}
+                <div className="w-full max-w-[980px] aspect-video lg:aspect-auto lg:h-full">
+                  <ImageCarousel
+                    items={[
+                      {
+                        src: "/CampanhaOutubroRosa.jpeg",
+                        href: "https://www.instagram.com/p/DPoQDZJgNkF/?igsh=c2puYmJqYXdpd3Nk",
+                      },
+                      {
+                        src: "/CampanhaMultivacinação.jpeg",
+                        href: "https://www.instagram.com/p/DP6i3STjZw3/?igsh=ZWY5YTJpdnJuZnJ2",
+                      },
+                      {
+                        src: "/VacinaSarampo.jpeg",
+                        href: "https://www.instagram.com/p/DNqIBrOM4YF/?igsh=cWU1ZnMya21ocGMw",
+                      },
+                    ]}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Coluna direita: dois cards empilhados, cada um ocupando metade da coluna */}
-        <section className="h-full flex flex-col gap-6 overflow-hidden">
+        {/* Coluna direita: dois cards empilhados */}
+        <section className="
+          h-auto lg:h-full
+          flex flex-col gap-6
+          lg:overflow-hidden
+        ">
           {/* Card CTA WhatsApp */}
           <div className="bg-white rounded-2xl shadow border border-gray-100 p-0 overflow-hidden">
-            <div className="h-full flex items-center justify-center p-6">
-              {/* Mantém o conteúdo centralizado e sem estourar */}
+            <div className="h-full flex items-center justify-center p-4 sm:p-6">
               <div className="w-full max-w-md">
                 <WhatsAppInfoCard />
               </div>
             </div>
           </div>
 
-          {/* Card Mapa + Botão */}
+          {/* Card Mapa + Botão (não alteramos o ícone/imagem do botão) */}
           <Card className="overflow-hidden">
             <CardContent className="h-full flex flex-col items-center justify-between p-4">
-              {/* Imagem com altura limitada para não criar scroll */}
               <div className="w-full rounded-xl overflow-hidden border border-gray-100">
                 <Image
                   height={150}
@@ -88,7 +91,7 @@ export default function InfoPage() {
         </section>
       </main>
 
-      {/* Botão flutuante permanece fixo e não interfere no layout/scroll */}
+      {/* Botão flutuante permanece fixo */}
       <WhatsAppFloatingButton />
     </div>
   );

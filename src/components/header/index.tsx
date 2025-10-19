@@ -33,7 +33,7 @@ export const Header = ({ children }: HeaderProps) => {
         </Link>
 
         {/* Área para links de navegação */}
-        <nav className="flex gap-6 items-center text-white font-medium">
+        <nav className="hidden md:flex gap-6 items-center text-white font-medium">
           {children}
         </nav>
 
