@@ -2,15 +2,30 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '../datePicker';
+import { OnSelectHandler } from 'react-day-picker';
 
 interface FilterCardProps {
   ubsList: string[]
   onSearchChange: (value: string) => void
   onUbsChange: (value: string) => void
   onClearFilters: () => void
+  searchName: string
+  selectedUbs: string
+  date: Date | undefined,
+  setDate: OnSelectHandler<Date | undefined>
 }
 
-export const FilterCard = ({ ubsList, onSearchChange, onUbsChange, onClearFilters }: FilterCardProps) => {
+export const FilterCard = ({
+  ubsList,
+  onSearchChange,
+  onUbsChange,
+  onClearFilters,
+  searchName,
+  selectedUbs,
+  date,
+  setDate
+}: FilterCardProps) => {
   return (
     <section className="bg-white rounded-lg shadow border-2 p-4 mb-3">
       <div className="max-w-6xl items-center m-auto">
@@ -21,13 +36,13 @@ export const FilterCard = ({ ubsList, onSearchChange, onUbsChange, onClearFilter
               icon={Search}
               placeholder='Pesquise por nome'
               onChange={(e) => onSearchChange(e.target.value)}
-              className='bg-amber-50 h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold text-sm shadow-sm transition-all duration-150 cursor-text outline-none'
+              className='bg-gray-50 h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold text-sm shadow-sm transition-all duration-150 cursor-text outline-none'
             />
-            <Select onValueChange={onUbsChange}>
-              <SelectTrigger className="bg-amber-50 w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none">
+            <Select onValueChange={onUbsChange} value={selectedUbs}>
+              <SelectTrigger className="bg-gray-50 w-[200px] h-9 rounded-lg border-2 border-[#5EB2BA] focus:border-[#0A8271] text-[#09483F] font-semibold px-3 text-sm shadow-sm transition-all duration-150 cursor-pointer outline-none">
                 <SelectValue placeholder="Selecione uma UBS" />
               </SelectTrigger>
-              <SelectContent className="bg-amber-50 p-2 rounded-xl shadow-lg">
+              <SelectContent className="bg-gray-50 p-2 rounded-xl shadow-lg">
                 <SelectGroup>
                   {ubsList.map((ubs, index) => (
                     <SelectItem
@@ -41,6 +56,7 @@ export const FilterCard = ({ ubsList, onSearchChange, onUbsChange, onClearFilter
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <DatePicker date={date} setDate={setDate} />
           </div>
 
           <Button

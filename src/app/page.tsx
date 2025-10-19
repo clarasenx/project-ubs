@@ -70,6 +70,15 @@ const columns: ColumnDef<ISchedule>[] = [
   },
 ]
 
+function isSameDate(date1: Date, date2: Date): boolean {
+  if (!date1 || !date2) return false
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  )
+}
+
 function extractHourMinute(time: string): string {
   return time.split(':').slice(0, 2).join(':');
 }
@@ -80,6 +89,7 @@ export default function Home() {
   const [ubsList, setUbsList] = useState<string[]>([])
   const [selectedUbs, setSelectedUbs] = useState<string>('')
   const [searchName, setSearchName] = useState<string>('')
+  const [date, setDate] = useState<Date | undefined>(new Date())
 
   function generateUbsList(data: ISchedule[]) {
     const unique = [...new Set(data.map((s) => s.ubsName))]
@@ -102,12 +112,16 @@ export default function Home() {
     return schedules.filter((s) => {
       const matchesUbs =
         selectedUbs === '' || s.ubsName.toLowerCase() === selectedUbs.toLowerCase()
+
       const matchesName =
         searchName === '' ||
         s.patientName.toLowerCase().includes(searchName.toLowerCase())
-      return matchesUbs && matchesName
+
+      const matchesDate = !date || isSameDate(s.date, date)
+
+      return matchesUbs && matchesName && matchesDate
     })
-  }, [schedules, selectedUbs, searchName])
+  }, [schedules, selectedUbs, searchName, date])
 
   const table = useReactTable({
     data: filteredSchedules,
@@ -154,13 +168,18 @@ export default function Home() {
         </div>
 
         <FilterCard
+          searchName={searchName}
+          selectedUbs={selectedUbs}
           ubsList={ubsList}
           onSearchChange={setSearchName}
           onUbsChange={setSelectedUbs}
           onClearFilters={() => {
             setSearchName('')
             setSelectedUbs('')
+            setDate(undefined)
           }}
+          setDate={setDate}
+          date={date}
         />
 
         <div className="overflow-x-auto rounded-lg border border-gray-200 shadow bg-white">
