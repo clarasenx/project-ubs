@@ -19,7 +19,7 @@ interface ImageCarouselProps {
 
 export const ImageCarousel = ({ items }: ImageCarouselProps) => {
   return (
-    <Carousel className="w-full max-w-sm ">
+    <Carousel className="w-full max-w-sm m-auto ">
       <CarouselContent>
         {items.map((item, index) => (
           <CarouselItem key={index}>

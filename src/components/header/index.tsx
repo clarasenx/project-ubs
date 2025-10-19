@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
 import LogoutButton from "../loggoutButton";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 interface HeaderProps {
   children?: ReactNode;
@@ -37,7 +38,13 @@ export const Header = ({ children }: HeaderProps) => {
           {children}
         </nav>
 
-        {logged ? <LogoutButton /> : null}
+        {logged ?
+          <LogoutButton /> :
+          <Link href={"/login"}>
+            <Button variant="outline">
+              Entrar
+            </Button>
+          </Link>}
       </div>
     </header>
   );
