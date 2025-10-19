@@ -2,6 +2,7 @@
 
 import { FaWhatsapp } from "react-icons/fa";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export default function WhatsAppInfoCard() {
   const phoneNumber = "5569992808641"; // número com DDI e DDD
@@ -11,7 +12,7 @@ export default function WhatsAppInfoCard() {
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
   return (
-    <div className="max-w-md mx-auto flex flex-col gap-4 text-center">
+    <div className="max-w-md mx-auto flex flex-col gap-4 text-center items-center">
       <h2 className="text-xl font-semibold text-gray-800">
         Agende sua consulta pelo WhatsApp
       </h2>
@@ -21,8 +22,20 @@ export default function WhatsAppInfoCard() {
         com a equipe e marcar sua consulta rapidamente, sem filas nem espera.
       </p>
 
+      <Image
+        src={"/qrcode.png"}
+        alt={"qrcode"}
+        height={100}
+        width={100}
+      />
+
       <Button className=" bg-[#0A8271] hover:bg-[#09483F] text-white hover:border-[#09483F] border-[#0A8271] mt-4 border-2 cursor-pointer">
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center gap-2">
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-row items-center gap-2"
+        >
           <FaWhatsapp size={28} />
           Falar no WhatsApp
         </a>
