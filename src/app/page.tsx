@@ -134,7 +134,7 @@ export default function Home() {
   useEffect(() => {
 
     // conecta ao servidor backend
-    socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000', {
+    socket = io(process.env.NEXT_PUBLIC_API_URL || 'https://obs-backend-utfa.onrender.com', {
       transports: ['websocket'], // evita fallback a long-polling
     })
 
